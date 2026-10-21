@@ -1,0 +1,53 @@
+name: Build marketplace
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [plugin-updated]
+  push:
+    branches: [main]
+    paths:
+      - sources.json
+      - scripts/**
+      - .github/workflows/build-marketplace.yml
+  pull_request:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-marketplace
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Collect plugins
+        run: node scripts/build-marketplace.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate marketplace
+        run: npx -y @anthropic-ai/claude-code plugin validate .
+
+      - name: Commit changes
+        if: github.event_name != 'pull_request'
+        run: |
+          if git diff --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add .claude-plugin/marketplace.json README.md
+          git commit -m "chore: update marketplace catalog"
+          git push

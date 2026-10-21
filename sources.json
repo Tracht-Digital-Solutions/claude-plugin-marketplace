@@ -1,0 +1,7 @@
+{
+  "$comment": "Discovery settings for scripts/build-marketplace.mjs. Every public repo of `owner` tagged with `topic` is merged automatically; `include` adds further repos, `exclude` skips repos.",
+  "owner": "jtracht",
+  "topic": "claude-code-plugin",
+  "include": [],
+  "exclude": []
+}
