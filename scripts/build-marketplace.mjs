@@ -19,7 +19,7 @@ const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
 
 const MARKETPLACE_META = {
   $schema: 'https://json.schemastore.org/claude-code-marketplace.json',
-  name: 'jtracht-plugins',
+  name: 'claude-plugin-marketplace',
   description: 'All Claude Code plugins by Julian Tracht, collected automatically from their source repositories.',
   owner: { name: 'Julian Tracht', url: 'https://github.com/jtracht' },
 };
@@ -29,7 +29,7 @@ async function gh(apiPath) {
     headers: {
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'jtracht-plugins-builder',
+      'User-Agent': 'claude-plugin-marketplace-builder',
       ...(TOKEN ? { Authorization: `Bearer ${TOKEN}` } : {}),
     },
   });

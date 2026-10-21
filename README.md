@@ -5,18 +5,18 @@ Marktplatz für alle Claude-Code-Plugins von [Julian Tracht](https://github.com/
 ## Installation
 
 ```text
-/plugin marketplace add jtracht/claude-plugins
-/plugin install <plugin>@jtracht-plugins
+/plugin marketplace add jtracht/claude-plugin-marketplace
+/plugin install <plugin>@claude-plugin-marketplace
 ```
 
-Updates holen: `/plugin marketplace update jtracht-plugins`
+Updates holen: `/plugin marketplace update claude-plugin-marketplace`
 
 ## Plugins
 
 <!-- plugins:start -->
 | Plugin | Beschreibung | Installation |
 | --- | --- | --- |
-| [`gitea`](https://github.com/jtracht/claude-code-gitea/tree/stable/plugin) | Work with any Gitea instance: repositories, files, branches, issues, pull requests, reviews, organisations, Gitea Actions, releases and webhooks. | `/plugin install gitea@jtracht-plugins` |
+| [`gitea`](https://github.com/jtracht/claude-code-gitea/tree/stable/plugin) | Work with any Gitea instance: repositories, files, branches, issues, pull requests, reviews, organisations, Gitea Actions, releases and webhooks. | `/plugin install gitea@claude-plugin-marketplace` |
 <!-- plugins:end -->
 
 ## So funktioniert die Pipeline
@@ -34,17 +34,17 @@ Der Workflow [`build-marketplace.yml`](.github/workflows/build-marketplace.yml) 
 
 1. Plugin-Repo öffentlich auf GitHub anlegen, mit `.claude-plugin/plugin.json` (oder `marketplace.json`).
 2. Topic `claude-code-plugin` setzen: `gh repo edit jtracht/<repo> --add-topic claude-code-plugin`
-3. Fertig – beim nächsten Lauf erscheint es hier. Sofort: `gh workflow run build-marketplace.yml -R jtracht/claude-plugins`
+3. Fertig – beim nächsten Lauf erscheint es hier. Sofort: `gh workflow run build-marketplace.yml -R jtracht/claude-plugin-marketplace`
 
 ### Sofort-Update aus einem Plugin-Repo (optional)
 
-Im Plugin-Repo einen Secret `MARKETPLACE_DISPATCH_TOKEN` hinterlegen (Fine-grained PAT mit *Contents: read & write* auf `jtracht/claude-plugins`) und nach dem Release ausführen:
+Im Plugin-Repo einen Secret `DISPATCH_TOKEN` hinterlegen (Fine-grained PAT mit *Contents: read & write* auf `jtracht/claude-plugin-marketplace`) und nach dem Release ausführen:
 
 ```yaml
 - name: Notify marketplace
-  run: gh api repos/jtracht/claude-plugins/dispatches -f event_type=plugin-updated
+  run: gh api repos/jtracht/claude-plugin-marketplace/dispatches -f event_type=plugin-updated
   env:
-    GH_TOKEN: ${{ secrets.MARKETPLACE_DISPATCH_TOKEN }}
+    GH_TOKEN: ${{ secrets.DISPATCH_TOKEN }}
 ```
 
 ### Lokal bauen

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
-  "name": "jtracht-plugins",
+  "name": "claude-plugin-marketplace",
   "description": "All Claude Code plugins by Julian Tracht, collected automatically from their source repositories.",
   "owner": {
     "name": "Julian Tracht",
