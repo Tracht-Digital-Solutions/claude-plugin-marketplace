@@ -20,8 +20,8 @@ const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
 const MARKETPLACE_META = {
   $schema: 'https://json.schemastore.org/claude-code-marketplace.json',
   name: 'claude-plugin-marketplace',
-  description: 'All Claude Code plugins by Julian Tracht, collected automatically from their source repositories.',
-  owner: { name: 'Julian Tracht', url: 'https://github.com/jtracht' },
+  description: 'All Claude Code plugins by Tracht Digital Solutions, collected automatically from their source repositories.',
+  owner: { name: 'Tracht Digital Solutions', url: 'https://github.com/Tracht-Digital-Solutions' },
 };
 
 async function gh(apiPath) {
@@ -52,15 +52,18 @@ async function ghJsonFile(repo, filePath, ref) {
 
 async function discoverRepos(sources) {
   const repos = new Map();
-  for (let page = 1; ; page++) {
-    const batch = await gh(`/users/${sources.owner}/repos?type=owner&per_page=100&page=${page}`);
-    if (!batch?.length) break;
-    for (const r of batch) {
-      if (r.private || r.archived || r.fork) continue;
-      if (!r.topics?.includes(sources.topic)) continue;
-      repos.set(r.full_name.toLowerCase(), { repo: r.full_name });
+  const owners = sources.owners ?? (sources.owner ? [sources.owner] : []);
+  for (const owner of owners) {
+    for (let page = 1; ; page++) {
+      const batch = await gh(`/users/${owner}/repos?type=owner&per_page=100&page=${page}`);
+      if (!batch?.length) break;
+      for (const r of batch) {
+        if (r.private || r.archived || r.fork) continue;
+        if (!r.topics?.includes(sources.topic)) continue;
+        repos.set(r.full_name.toLowerCase(), { repo: r.full_name });
+      }
+      if (batch.length < 100) break;
     }
-    if (batch.length < 100) break;
   }
   for (const inc of sources.include ?? []) {
     const entry = typeof inc === 'string' ? { repo: inc } : inc;
