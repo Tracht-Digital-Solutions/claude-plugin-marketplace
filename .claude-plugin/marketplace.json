@@ -22,7 +22,7 @@
       ],
       "source": {
         "source": "git-subdir",
-        "url": "https://github.com/jtracht/gitea-claude-plugin.git",
+        "url": "https://github.com/Tracht-Digital-Solutions/gitea-claude-plugin.git",
         "path": "plugin",
         "ref": "stable"
       }
