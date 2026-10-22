@@ -23,7 +23,7 @@ Updates holen: `/plugin marketplace update claude-plugin-marketplace`
 
 Der Workflow [`build-marketplace.yml`](.github/workflows/build-marketplace.yml) führt `scripts/build-marketplace.mjs` aus:
 
-1. **Discovery:** Alle öffentlichen, nicht archivierten Repos von `Tracht-Digital-Solutions` und `jtracht` mit dem Topic **`claude-code-plugin`** werden gefunden. Über [`sources.json`](sources.json) lassen sich zusätzliche Repos (`include`, optional mit `ref`) aufnehmen oder ausschließen (`exclude`).
+1. **Discovery:** Alle öffentlichen, nicht archivierten Repos von `Tracht-Digital-Solutions` mit dem Topic **`claude-code-plugin`** werden gefunden. Über [`sources.json`](sources.json) lassen sich zusätzliche Repos (`include`, optional mit `ref`) aufnehmen oder ausschließen (`exclude`).
 2. **Einlesen:** Pro Repo wird `.claude-plugin/marketplace.json` gelesen und dessen Plugin-Einträge übernommen (relative Pfade werden zu `git-subdir`-Quellen umgeschrieben). Fehlt sie, wird `.claude-plugin/plugin.json` im Repo-Root als einzelnes Plugin aufgenommen.
 3. **Zusammenführen:** Einträge werden nach Namen sortiert, doppelte Namen brechen den Build ab. `.claude-plugin/marketplace.json` und die Tabelle oben werden neu geschrieben.
 4. **Validieren & Committen:** `claude plugin validate .` prüft das Ergebnis; nur bei Änderungen wird committet.
